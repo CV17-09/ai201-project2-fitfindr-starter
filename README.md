@@ -495,7 +495,7 @@ Claude generated an initial version of the agent workflow. I reviewed and modifi
 
 ## Example 3 — Testing and Debugging
 
-I used Claude to help create pytest test cases and troubleshoot implementation issues.
+I used Claude to help create pytest test cases and troubleshoot implementation issues, I modified several generated tests to match the exact function signatures used in my implementation and added assertions specific to the project's failure-handling requirements.
 
 Claude helped generate tests for:
 
@@ -512,6 +512,9 @@ After generating the tests, I executed them locally using pytest and verified th
 
 Claude was used as a development assistant to generate implementation ideas, code drafts, test cases, and debugging suggestions. All generated code was reviewed, modified when necessary, and tested before being included in the final project. I remained responsible for the final design decisions, implementation, testing, and validation of the system.
 
+## Spec Reflection
+
+Creating the specification before implementation helped me clearly define the responsibilities of each tool and the conditions that control the planning loop.
 
 # Reflection
 
