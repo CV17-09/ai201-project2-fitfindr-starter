@@ -21,31 +21,49 @@ from utils.data_loader import get_example_wardrobe, get_empty_wardrobe
 # ── query handler ─────────────────────────────────────────────────────────────
 
 def handle_query(user_query: str, wardrobe_choice: str) -> tuple[str, str, str]:
-    """
-    Called by Gradio when the user submits a query.
+    if not user_query or not user_query.strip():
+        return (
+            "Please enter what you're looking for, like 'vintage graphic tee under $30'.",
+            "",
+            "",
+        )
 
-    Args:
-        user_query:     The text the user typed into the search box.
-        wardrobe_choice: Either "Example wardrobe" or "Empty wardrobe (new user)".
+    if wardrobe_choice == "Empty wardrobe (new user)":
+        wardrobe = get_empty_wardrobe()
+    else:
+        wardrobe = get_example_wardrobe()
 
-    Returns:
-        A tuple of three strings:
-            (listing_text, outfit_suggestion, fit_card)
-        Each string maps to one of the three output panels in the UI.
+    session = run_agent(
+        query=user_query,
+        wardrobe=wardrobe,
+    )
 
-    TODO:
-        1. Guard against an empty query (return early with an error message).
-        2. Select the wardrobe based on wardrobe_choice.
-        3. Call run_agent() with the query and selected wardrobe.
-        4. If session["error"] is set, return the error in the first panel
-           and empty strings for the other two.
-        5. Otherwise, format session["selected_item"] into a readable listing_text
-           string and return it along with session["outfit_suggestion"] and
-           session["fit_card"].
-    """
-    # TODO: implement this function
-    return "Agent not yet implemented.", "", ""
+    if session["error"]:
+        return (
+            session["error"],
+            "",
+            "",
+        )
 
+    item = session["selected_item"]
+
+    listing_text = (
+        f"Found: {item.get('title', 'Untitled item')}\n"
+        f"Price: ${item.get('price', 'N/A')}\n"
+        f"Platform: {item.get('platform', 'N/A')}\n"
+        f"Size: {item.get('size', 'N/A')}\n"
+        f"Condition: {item.get('condition', 'N/A')}\n"
+        f"Brand: {item.get('brand') or 'Unknown'}\n"
+        f"Colors: {', '.join(item.get('colors', []))}\n"
+        f"Style tags: {', '.join(item.get('style_tags', []))}\n\n"
+        f"{item.get('description', '')}"
+    )
+
+    return (
+        listing_text,
+        session["outfit_suggestion"] or "",
+        session["fit_card"] or "",
+    )
 
 # ── interface ─────────────────────────────────────────────────────────────────
 
