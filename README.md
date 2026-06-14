@@ -525,6 +525,7 @@ The most important lesson from this project was that state management is what tu
 Error handling was also critical. By explicitly designing failure behavior before implementation, the system remained useful even when no listings were found or when wardrobe information was unavailable.
 
 # Demo Video
+https://www.loom.com/share/aa74cd9a6d454f2588f4525cbebcba18
 
 ## Successful Search Workflow
 
